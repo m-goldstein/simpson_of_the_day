@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup as soup
 requests.urllib3.disable_warnings()
 _ASSETS_DIR = './assets/'
 _WWW_DIR = './www/'
+#_WWW_DIR = '/var/www/max.dglassreviews.com/public_html/'
 _HTML_FNAME = f'index.html'
 _HTML_FP = f'{_WWW_DIR}{_HTML_FNAME}'
 DATE_FMTSTRING = '%m/%d/%Y'
@@ -16,13 +17,13 @@ _SEEN_FNAME = 'seen'
 _SEEN_FP = f'{_ASSETS_DIR}{_SEEN_FNAME}'
 _SEEN_BAK_FNAME = 'seen.bak'
 _SEEN_BAK_FP = f'{_ASSETS_DIR}{_SEEN_BAK_FNAME}'
-_SYNC_CMD = f'cp {_SEEN_BAK_FP} {_SEEN_FP}'
+_SYNC_CMD = f'cp {_SEEN_BAK_FP} {_SEEN_FP}; cp {_SEEN_FP} {_SEEN_BAK_FP}'
 _html =\
 """<html>
 <head>
-<title>Simpson's character of the day!</title>
+<title>Simpson's character of the day: {}!</title>
 </head>
-<body>
+<body align="center">
     <h1>Today's ({}) Character is {}!</h1>
     <img src={}>
 </body>
@@ -31,7 +32,7 @@ _html =\
 def make_html(html=_html,html_fp=_HTML_FNAME,use_net=False,archive=True):
     date = datetime.now().strftime(DATE_FMTSTRING)
     name, imgpath = init_and_get_random_charachter(use_net=use_net)
-    html = html.format(date,name,imgpath)
+    html = html.format(name,date,name,imgpath)
     fp = open(f'{_WWW_DIR}{html_fp}','w')
     fp.write(html)
     fp.close()
